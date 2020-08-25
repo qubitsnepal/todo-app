@@ -3,6 +3,7 @@ import GlobalContext from "./GlobalContext";
 
 const GlobalProvider = (props) => {
   const TaskContext = useContext(GlobalContext);
+
   return (
     <>
       <TaskContext.Provider value={{ name: "abcd" }}>
