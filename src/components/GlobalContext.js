@@ -1,3 +1,3 @@
-import React,{createContext} from "react";
-const GlobalContext=createContext();
+import React, { createContext } from "react";
+const GlobalContext = createContext();
 export default GlobalContext;
