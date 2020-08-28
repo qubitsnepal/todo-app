@@ -1,14 +1,21 @@
-import React, { useContext } from "react";
+import React, { useState } from "react";
 import GlobalContext from "./GlobalContext";
+import uuid from "react-uuid";
 
 const GlobalProvider = (props) => {
-  const TaskContext = useContext(GlobalContext);
+  const [tasks, setTasks] = useState([]);
+  const addTask = (taskTitle) => {
+    setTasks([...tasks, { taskTitle, id: uuid() }]);
+  };
+  const clearAll = () => {
+    setTasks([]);
+  };
 
   return (
     <>
-      <TaskContext.Provider value={{ name: "abcd" }}>
+      <GlobalContext.Provider value={{ tasks, addTask, clearAll }}>
         {props.children}
-      </TaskContext.Provider>
+      </GlobalContext.Provider>
     </>
   );
 };
