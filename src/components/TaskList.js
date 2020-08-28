@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const TodoList = ({ task }) => {
+const TaskList = ({ task }) => {
   return (
     <>
       <Wrapper>
@@ -15,7 +15,7 @@ const TodoList = ({ task }) => {
   );
 };
 
-export default TodoList;
+export default TaskList;
 const Icon = styled.i`
   color: white;
   margin-right: 3rem;
