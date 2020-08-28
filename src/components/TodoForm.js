@@ -49,6 +49,7 @@ const TodoForm = () => {
     </>
   );
 };
+export default TodoForm;
 
 const Container = styled.div`
   margin: 80px 400px;
@@ -93,5 +94,3 @@ const Head = styled.h1`
   padding-bottom: 3rem;
   padding-top: 3rem;
 `;
-
-export default TodoForm;

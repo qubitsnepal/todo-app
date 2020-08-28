@@ -16,6 +16,7 @@ const TaskList = ({ task }) => {
 };
 
 export default TaskList;
+
 const Icon = styled.i`
   color: white;
   margin-right: 3rem;
