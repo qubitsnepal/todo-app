@@ -53,14 +53,16 @@ const TodoForm = () => {
   return (
     <>
       <Container>
-        <Head>TODO APP</Head>
-        <Input
-          type="text"
-          placeholder="ADD YOUR ITEMS"
-          onChange={handleChange}
-          value={inputList}
-        />
-        <Span>{error ? "Input field cannot be left blank!!" : ""}</Span>
+        <InputWrapper>
+          <Head>TODO APP</Head>
+          <Input
+            type="text"
+            placeholder="ADD YOUR ITEMS"
+            onChange={handleChange}
+            value={inputList}
+          />
+          <span>{error ? "Input field cannot be left blank!!" : ""}</span>
+        </InputWrapper>
         <br></br>
 
         <Button onClick={handleClick}>{change ? "UPDATE" : "ADD ITEM"}</Button>
@@ -125,19 +127,11 @@ const Head = styled.h1`
   padding-bottom: 3rem;
   padding-top: 3rem;
 `;
-const Span = styled.span`
-  position: absolute;
-  color: red;
-  font-weight: 500;
 
-  left: 30%;
-  top: 30%;
-  font-size: 1.5rem;
-  width: 400px;
-`;
 const NoTaskText = styled.div`
-  position: absolute;
-  top: 60%;
-  left: 38%;
-  font-size: 2rem;
+  margin-top: 10rem;
+  font-size: 1.4rem;
+`;
+const InputWrapper = styled.div`
+  text-align: center;
 `;
