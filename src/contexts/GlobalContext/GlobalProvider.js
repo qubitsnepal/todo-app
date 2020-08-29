@@ -10,10 +10,13 @@ const GlobalProvider = (props) => {
   const clearAll = () => {
     setTasks([]);
   };
+  const deleteItem = (itemId) => {
+    setTasks(tasks.filter((item) => item.id !== itemId));
+  };
 
   return (
     <>
-      <GlobalContext.Provider value={{ tasks, addTask, clearAll }}>
+      <GlobalContext.Provider value={{ tasks, addTask, clearAll, deleteItem }}>
         {props.children}
       </GlobalContext.Provider>
     </>
