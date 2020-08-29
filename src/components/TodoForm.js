@@ -4,9 +4,16 @@ import TaskList from "./TaskList";
 import GlobalContext from "../contexts/GlobalContext/GlobalContext";
 
 const TodoForm = () => {
-  const { tasks, addTask, clearAll, foundItem, editTask } = useContext(
-    GlobalContext
-  );
+  const {
+    tasks,
+    addTask,
+    clearAll,
+    foundItem,
+    editTask,
+    change,
+    setChange,
+    setFoundItem,
+  } = useContext(GlobalContext);
   const [inputList, setInputList] = useState("");
 
   console.log(foundItem);
@@ -22,6 +29,9 @@ const TodoForm = () => {
       setInputList("");
     } else {
       editTask(inputList, foundItem.id);
+      setInputList("");
+      setChange(false);
+      setFoundItem(null);
     }
   };
   const handleClear = (e) => {
@@ -47,7 +57,7 @@ const TodoForm = () => {
           value={inputList}
           required
         />
-        <Button onClick={handleClick}>ADD ITEM</Button>
+        <Button onClick={handleClick}>{change ? "UPDATE" : "ADD ITEM"}</Button>
         <Button onClick={handleClear}>CLEAR ALL</Button>
         <Ul>
           {tasks.length > 0 ? (
