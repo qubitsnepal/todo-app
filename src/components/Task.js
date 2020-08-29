@@ -7,17 +7,21 @@ const Task = ({ task }) => {
 
   return (
     <>
-      <div>{task.taskTitle}</div>
-      <IconWrapper>
-        <Icon
-          onClick={() => deleteItem(task.id)}
-          className="fa fa-trash"
-        ></Icon>
-        <Icon
-          onClick={() => findItemById(task.id)}
-          className="fa fa-edit"
-        ></Icon>
-      </IconWrapper>
+      <Table>
+        <tr>
+          <Column>{task.taskTitle}</Column>
+          <th>
+            <Icon
+              onClick={() => deleteItem(task.id)}
+              className="fa fa-trash"
+            ></Icon>
+            <Icon
+              onClick={() => findItemById(task.id)}
+              className="fa fa-edit"
+            ></Icon>
+          </th>
+        </tr>
+      </Table>
     </>
   );
 };
@@ -25,9 +29,17 @@ const Task = ({ task }) => {
 export default Task;
 const Icon = styled.i`
   color: white;
-  margin-right: 3rem;
-  font-size: 3rem;
+  padding-left: 10px;
+
+  font-size: 1.5rem;
 `;
-const IconWrapper = styled.div`
-  margin-left: 3rem;
+
+const Table = styled.table`
+  text-align: center;
+
+  width: 94%;
+`;
+const Column = styled.th`
+  width: 300px;
+  font-size: 1.5rem;
 `;
