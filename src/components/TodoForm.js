@@ -15,23 +15,27 @@ const TodoForm = () => {
     setFoundItem,
   } = useContext(GlobalContext);
   const [inputList, setInputList] = useState("");
+  const [error, setError] = useState(false);
 
-  console.log(foundItem);
-
-  const itemEvent = (event) => {
+  const handleChange = (event) => {
     setInputList(event.target.value);
+    setError(false);
   };
 
   const handleClick = (e) => {
     e.preventDefault();
-    if (foundItem === null) {
-      addTask(inputList);
-      setInputList("");
+    if (inputList.length > 0) {
+      if (foundItem === null) {
+        addTask(inputList);
+        setInputList("");
+      } else {
+        editTask(inputList, foundItem.id);
+        setInputList("");
+        setChange(false);
+        setFoundItem(null);
+      }
     } else {
-      editTask(inputList, foundItem.id);
-      setInputList("");
-      setChange(false);
-      setFoundItem(null);
+      setError(true);
     }
   };
   const handleClear = (e) => {
@@ -49,21 +53,23 @@ const TodoForm = () => {
   return (
     <>
       <Container>
-        <Head>ToDo App</Head>
+        <Head>TODO APP</Head>
         <Input
           type="text"
           placeholder="ADD YOUR ITEMS"
-          onChange={itemEvent}
+          onChange={handleChange}
           value={inputList}
-          required
         />
+        <Span>{error ? "Input field cannot be left blank!!" : ""}</Span>
+        <br></br>
+
         <Button onClick={handleClick}>{change ? "UPDATE" : "ADD ITEM"}</Button>
         <Button onClick={handleClear}>CLEAR ALL</Button>
         <Ul>
           {tasks.length > 0 ? (
             tasks.map((task) => <TaskList task={task} />)
           ) : (
-            <div>No Tasks Added</div>
+            <NoTaskText>No Tasks Added!</NoTaskText>
           )}
         </Ul>
       </Container>
@@ -73,40 +79,44 @@ const TodoForm = () => {
 export default TodoForm;
 
 const Container = styled.div`
-  margin: 80px 400px;
-  height: 842px;
-  width: 943px;
+  height: 850px;
+  width: 600px;
   text-align: center;
   color: white;
   background-color: #353232;
+  margin: 0 auto;
+  margin-top: 40px;
+  border-radius: 10px;
 `;
 const Input = styled.input`
-  border: none;
-  border-bottom: 1px solid white;
   width: 25rem;
   background: transparent;
-  margin-right: 4rem;
+  border: none;
+  border-bottom: 1px solid white;
+
   color: white;
   font-size: 1.4rem;
   text-align: center;
-  required: "required";
+
+  margin-bottom: 3rem;
 `;
 const Button = styled.button`
   background-color: #a91f48;
-  margin-right: 3rem;
+  margin-right: 1.2rem;
   color: white;
   border-radius: 20px;
-  height: 60px;
+  height: 50px;
   border: none;
-  width: 150px;
-  font-size: 1.4rem;
+  width: 120px;
+  font-size: 1.2rem;
 `;
-export const Ul = styled.ul`
+const Ul = styled.ul`
   list-style: none;
   color: white;
   text-transform: capitalize;
-  font-size: 2.5rem;
-  margin-top: 5rem;
+  font-size: 1.5rem;
+  margin-top: 3rem;
+  margin-left: 0;
 `;
 const Head = styled.h1`
   font-size: 3.5rem;
@@ -114,4 +124,20 @@ const Head = styled.h1`
   font-weight: 400;
   padding-bottom: 3rem;
   padding-top: 3rem;
+`;
+const Span = styled.span`
+  position: absolute;
+  color: red;
+  font-weight: 500;
+
+  left: 30%;
+  top: 30%;
+  font-size: 1.5rem;
+  width: 400px;
+`;
+const NoTaskText = styled.div`
+  position: absolute;
+  top: 60%;
+  left: 38%;
+  font-size: 2rem;
 `;
