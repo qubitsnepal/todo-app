@@ -1,14 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import GlobalContext from "./GlobalContext";
 import uuid from "react-uuid";
 
 const GlobalProvider = (props) => {
-  const [tasks, setTasks] = useState([]);
+  const initialState = JSON.parse(localStorage.getItem("tasks"));
+  const [tasks, setTasks] = useState(initialState !== null ? initialState : []);
   const [foundItem, setFoundItem] = useState(null);
   const [change, setChange] = useState(false);
   const addTask = (taskTitle) => {
     setTasks([...tasks, { taskTitle, id: uuid() }]);
   };
+  useEffect(() => localStorage.setItem("tasks", JSON.stringify(tasks)), [
+    tasks,
+  ]);
   const clearAll = () => {
     setTasks([]);
   };
