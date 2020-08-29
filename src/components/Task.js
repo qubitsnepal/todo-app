@@ -3,7 +3,7 @@ import styled from "styled-components";
 import GlobalContext from "../contexts/GlobalContext/GlobalContext";
 
 const Task = ({ task }) => {
-  const { deleteItem } = useContext(GlobalContext);
+  const { deleteItem, findItemById } = useContext(GlobalContext);
 
   return (
     <>
@@ -13,7 +13,10 @@ const Task = ({ task }) => {
           onClick={() => deleteItem(task.id)}
           className="fa fa-trash"
         ></Icon>
-        <Icon className="fa fa-edit"></Icon>
+        <Icon
+          onClick={() => findItemById(task.id)}
+          className="fa fa-edit"
+        ></Icon>
       </IconWrapper>
     </>
   );

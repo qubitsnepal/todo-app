@@ -1,29 +1,40 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import styled from "styled-components";
 import TaskList from "./TaskList";
 import GlobalContext from "../contexts/GlobalContext/GlobalContext";
 
 const TodoForm = () => {
-  const { tasks, addTask, clearAll } = useContext(GlobalContext);
+  const { tasks, addTask, clearAll, foundItem, editTask } = useContext(
+    GlobalContext
+  );
   const [inputList, setInputList] = useState("");
+
+  console.log(foundItem);
 
   const itemEvent = (event) => {
     setInputList(event.target.value);
   };
 
   const handleClick = (e) => {
-    if (inputList.length > 0) {
-      e.preventDefault();
+    e.preventDefault();
+    if (foundItem === null) {
       addTask(inputList);
       setInputList("");
     } else {
-      alert("Error! Don't leave field blank");
+      editTask(inputList, foundItem.id);
     }
   };
   const handleClear = (e) => {
     e.preventDefault();
     clearAll();
   };
+  useEffect(() => {
+    if (foundItem !== null) {
+      setInputList(foundItem.taskTitle);
+    } else {
+      setInputList("");
+    }
+  }, [foundItem]);
 
   return (
     <>
