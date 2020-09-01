@@ -16,10 +16,6 @@ This is develop for learn all necessary things in project creation time for us.
   2. formik
   3. yup
 
-### How project looks like
-
-![image not support](https://drive.google.com/file/d/1BcdyqAv32LSl3UfZEg9BMBSN2jV6vx8S/view?usp=sharing "Todo app")
-
 ## How it helps us
 
 - it can be used in shoping time
