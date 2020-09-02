@@ -3,35 +3,34 @@ import ErrorMsg from "./ErrorMsg";
 import { Formik, Field, ErrorMessage, Form } from "formik";
 import * as Yup from "yup";
 import styled from "styled-components";
-const initialValues = {
-  fullName: "",
-  email: "",
-  password: "",
-  confirmPassword: "",
-};
-const validationSchema = Yup.object({
-  fullName: Yup.string()
-    .max(15, "Must be 15 characters or less")
-    .required("Required"),
-  email: Yup.string().email("Invalid email address").required("Required"),
-  password: Yup.string().required("Required"),
-  confirmPassword: Yup.string().oneOf(
-    [Yup.ref("password"), null],
-    "Passwords must match"
-  ),
-});
-const onSubmit = (values, onSubmitProps) => {
-  alert(JSON.stringify(values, null, 2));
-  onSubmitProps.setSubmitting(false);
-};
 
 const SignUpForm = () => {
   return (
     <>
       <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={onSubmit}
+        initialValues={{
+          fullName: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+        }}
+        validationSchema={Yup.object({
+          fullName: Yup.string()
+            .max(15, "Must be 15 characters or less")
+            .required("Required"),
+          email: Yup.string()
+            .email("Invalid email address")
+            .required("Required"),
+          password: Yup.string().required("Required"),
+          confirmPassword: Yup.string().oneOf(
+            [Yup.ref("password"), null],
+            "Passwords must match"
+          ),
+        })}
+        onSubmit={(values, onSubmitProps) => {
+          alert(JSON.stringify(values, null, 2));
+          onSubmitProps.setSubmitting(false);
+        }}
       >
         {(formik) => {
           return (
@@ -102,6 +101,7 @@ const SignUpForm = () => {
 };
 
 export default SignUpForm;
+
 const Container = styled.div`
   height: 850px;
   width: 600px;
@@ -112,6 +112,7 @@ const Container = styled.div`
   margin-top: 40px;
   border-radius: 10px;
 `;
+
 const Input = styled.div`
   display: flex;
 
@@ -120,18 +121,22 @@ const Input = styled.div`
   margin-top: 3rem;
   padding-left: 10rem;
 `;
+
 const Head = styled.h1`
   padding-top: 4rem;
   font-size: 3.5rem;
 `;
+
 const MyStyledInput = styled.input`
   width: 70%;
   height: 40px;
 `;
+
 const Label = styled.label`
   font-size: 1.3rem;
   margin-bottom: 1rem;
 `;
+
 const Button = styled.button`
   width: 52%;
   margin-left: 2rem;
