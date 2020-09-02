@@ -27,6 +27,7 @@ const Task = ({ task }) => {
 };
 
 export default Task;
+
 const Icon = styled.i`
   color: white;
   padding-left: 10px;
