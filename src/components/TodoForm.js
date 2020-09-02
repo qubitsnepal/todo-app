@@ -1,7 +1,10 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import TaskList from "./TaskList";
 import GlobalContext from "../contexts/GlobalContext/GlobalContext";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import ErrorMsg from "./ErrorMsg";
 
 const TodoForm = () => {
   const {
@@ -14,66 +17,69 @@ const TodoForm = () => {
     setChange,
     setFoundItem,
   } = useContext(GlobalContext);
-  const [inputList, setInputList] = useState("");
-  const [error, setError] = useState(false);
 
-  const handleChange = (event) => {
-    setInputList(event.target.value);
-    setError(false);
-  };
-
-  const handleClick = (e) => {
-    e.preventDefault();
-    if (inputList.length > 0) {
+  const onSubmit = (values, onSubmitProps) => {
+    if (values.inputList.length > 0) {
       if (foundItem === null) {
-        addTask(inputList);
-        setInputList("");
+        addTask(values.inputList);
+        onSubmitProps.resetForm();
       } else {
-        editTask(inputList, foundItem.id);
-        setInputList("");
+        editTask(values.inputList, foundItem.id);
+
         setChange(false);
         setFoundItem(null);
+        onSubmitProps.resetForm();
       }
-    } else {
-      setError(true);
     }
   };
   const handleClear = (e) => {
     e.preventDefault();
     clearAll();
   };
-  useEffect(() => {
-    if (foundItem !== null) {
-      setInputList(foundItem.taskTitle);
-    } else {
-      setInputList("");
-    }
-  }, [foundItem]);
 
   return (
     <>
       <Container>
-        <InputWrapper>
-          <Head>TODO APP</Head>
-          <Input
-            type="text"
-            placeholder="ADD YOUR ITEMS"
-            onChange={handleChange}
-            value={inputList}
-          />
-          <span>{error ? "Input field cannot be left blank!!" : ""}</span>
-        </InputWrapper>
-        <br></br>
+        <Formik
+          initialValues={{ inputList: "" }}
+          validationSchema={Yup.object({
+            inputList: Yup.string().required("Required"),
+          })}
+          onSubmit={onSubmit}
+        >
+          {(formik) => {
+            return (
+              <Form>
+                <InputWrapper>
+                  <Head>TODO APP</Head>
+                  <Field
+                    as={Input}
+                    type="text"
+                    placeholder="ADD YOUR ITEMS"
+                    name="inputList"
+                  />
+                  <ErrorMessage name="inputList" component={ErrorMsg} />
+                </InputWrapper>
+                <br></br>
 
-        <Button onClick={handleClick}>{change ? "UPDATE" : "ADD ITEM"}</Button>
-        <Button onClick={handleClear}>CLEAR ALL</Button>
-        <Ul>
-          {tasks.length > 0 ? (
-            tasks.map((task) => <TaskList task={task} />)
-          ) : (
-            <NoTaskText>No Tasks Added!</NoTaskText>
-          )}
-        </Ul>
+                <Button type="submit">{change ? "UPDATE" : "ADD ITEM"}</Button>
+
+                <Button type="button" onClick={handleClear}>
+                  CLEAR ALL
+                </Button>
+                <Ul>
+                  {tasks.length > 0 ? (
+                    tasks.map((task) => (
+                      <TaskList task={task} formik={formik} />
+                    ))
+                  ) : (
+                    <NoTaskText>No Tasks Added!</NoTaskText>
+                  )}
+                </Ul>
+              </Form>
+            );
+          }}
+        </Formik>
       </Container>
     </>
   );
@@ -95,12 +101,10 @@ const Input = styled.input`
   background: transparent;
   border: none;
   border-bottom: 1px solid white;
-
   color: white;
   font-size: 1.4rem;
   text-align: center;
-
-  margin-bottom: 3rem;
+  margin-bottom: 0.5rem;
 `;
 const Button = styled.button`
   background-color: #a91f48;
@@ -132,6 +136,7 @@ const NoTaskText = styled.div`
   margin-top: 10rem;
   font-size: 1.4rem;
 `;
+
 const InputWrapper = styled.div`
   text-align: center;
 `;
