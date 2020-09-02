@@ -32,6 +32,12 @@ This is develop for learn all necessary things in project creation time for us.
 
 ## How it helps us
 
+  1. React
+  2. formik
+  3. yup
+
+## How it helps us
+
 - it can be used in shoping time
 - it can be used in day to day life to remember shedule.
 
