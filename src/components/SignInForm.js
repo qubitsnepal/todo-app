@@ -1,22 +1,21 @@
 import React from "react";
 import styled from "styled-components";
-import { Formik } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-const validationSchema = Yup.object({
-  email: Yup.string().email("Invalid email format").required("Required"),
-  password: Yup.string()
-    .min(8, "password must be 8 digit")
-    .required("Required"),
-});
-const onSubmit = (values) => {
-  console.log("form data:", values);
-};
-const initialValues = {
-  email: "",
-  password: "",
-};
 function SignInForm() {
+  const validationSchema = Yup.object({
+    email: Yup.string().email("Invalid email format").required("Required"),
+    password: Yup.string()
+      .min(8, "password must be 8 digit")
+      .required("Required"),
+  });
+  const onSubmit = (values) => {};
+  const initialValues = {
+    email: "",
+    password: "",
+  };
+
   return (
     <>
       <Formik
@@ -25,40 +24,35 @@ function SignInForm() {
         validationSchema={validationSchema}
       >
         {(formik) => {
-          console.log(formik);
           return (
             <Container>
-              <form onSubmit={formik.handleSubmit}>
+              <Form>
                 <Head>TODO APP</Head>
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  type="email"
-                  id="email"
-                  name="email"
-                  autoComplete="off"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.email}
-                />
-                {formik.errors.email ? (
-                  <Error>{formik.errors.email}</Error>
-                ) : null}
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  type="password"
-                  id="password"
-                  name="password"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.password}
-                />
-                {formik.errors.password ? (
-                  <Error>{formik.errors.password}</Error>
-                ) : null}
+                <Input>
+                  <Label htmlFor="email">Email</Label>
+                  <Field
+                    type="email"
+                    id="email"
+                    name="email"
+                    autoComplete="off"
+                  />
 
-                <Button type="submit">SignIn</Button>
-                {/* <Button>SignUp</Button> */}
-              </form>
+                  <Error>
+                    <ErrorMessage name="email" />
+                  </Error>
+                </Input>
+
+                <Input>
+                  <Label htmlFor="password">Password</Label>
+                  <Field type="password" id="password" name="password" />
+                  <Error>
+                    <ErrorMessage name="password" />
+                  </Error>
+                </Input>
+
+                <Button>SignIn</Button>
+                <Button>SignUp</Button>
+              </Form>
             </Container>
           );
         }}
@@ -77,6 +71,7 @@ const Container = styled.div`
   margin: 40px auto;
   border-radius: 10px;
 `;
+
 const Head = styled.h1`
   font-size: 1.5rem;
   font-weight: 600;
@@ -84,33 +79,32 @@ const Head = styled.h1`
   padding-bottom: 3rem;
   padding-top: 3rem;
 `;
+
 const Label = styled.label`
   font-size: 1.1rem;
-  margin-left: 3rem;
-  font-weight: 500;
+  margin: 1rem 0rem;
+  font-weight: 600;
 `;
-const Input = styled.input`
-  width: 18rem;
-  height: 2.5rem;
-  background: #f7f9f9;
-  border-radius: 4px;
-  border: none;
-  font-size: 1.4rem;
-  text-align: center;
-  margin: 1rem 3rem;
+
+const Input = styled.div`
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  margin: 1rem 7rem;
 `;
+
 const Button = styled.button`
   background-color: #a91f48;
   margin-right: 1.2rem;
   color: white;
   border-radius: 10px;
-  height: 40px;
+  height: 30px;
   border: none;
-  margin: 3rem 2.5rem;
-  width: 120px;
-  font-size: 1.2rem;
+  margin: 3rem 3.1rem;
+  width: 90px;
+  font-size: 1rem;
 `;
+
 const Error = styled.div`
-  margin: 0rem 5rem;
   color: red;
 `;
