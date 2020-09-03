@@ -30,6 +30,7 @@ const SignUpForm = () => {
         onSubmit={(values, onSubmitProps) => {
           alert(JSON.stringify(values, null, 2));
           onSubmitProps.setSubmitting(false);
+          onSubmitProps.resetForm();
         }}
       >
         {(formik) => {
