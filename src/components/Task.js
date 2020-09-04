@@ -8,9 +8,9 @@ const Task = ({ task }) => {
   return (
     <>
       <Table>
-        <tr>
+        <Trow>
           <Column>{task.taskTitle}</Column>
-          <th>
+          <Column>
             <Icon
               onClick={() => deleteItem(task.id)}
               className="fa fa-trash"
@@ -19,8 +19,8 @@ const Task = ({ task }) => {
               onClick={() => findItemById(task.id)}
               className="fa fa-edit"
             ></Icon>
-          </th>
-        </tr>
+          </Column>
+        </Trow>
       </Table>
     </>
   );
@@ -43,4 +43,8 @@ const Table = styled.table`
 const Column = styled.th`
   width: 300px;
   font-size: 1.5rem;
+`;
+const Trow = styled.tr`
+  display: flex;
+  justify-content: space-between;
 `;
