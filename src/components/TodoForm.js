@@ -6,6 +6,11 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import ErrorMsg from "./ErrorMsg";
 
+const MyInput = ({ field, ...props }) => {
+  console.log(field);
+  return <Input {...field} {...props} />;
+};
+
 const TodoForm = () => {
   const {
     tasks,
@@ -41,11 +46,12 @@ const TodoForm = () => {
     <>
       <Container>
         <Formik
-          initialValues={{ inputList: "" }}
+          initialValues={{ inputList: foundItem ? foundItem.taskTitle : "" }}
           validationSchema={Yup.object({
             inputList: Yup.string().required("Required"),
           })}
           onSubmit={onSubmit}
+          key={foundItem ? foundItem.taskTitle : ""}
         >
           {(formik) => {
             return (
@@ -53,11 +59,19 @@ const TodoForm = () => {
                 <InputWrapper>
                   <Head>TODO APP</Head>
                   <Field
-                    as={Input}
+                    as={MyInput}
                     type="text"
                     placeholder="ADD YOUR ITEMS"
                     name="inputList"
+                    // value={formik.values.inputList}
                   />
+                  {/* <Input
+                    name="inputList"
+                    value={formik.values.inputList}
+                    onChange={(e) =>
+                      formik.setFieldValue("inputlist", e.target.value)
+                    }
+                  /> */}
                   <ErrorMessage name="inputList" component={ErrorMsg} />
                 </InputWrapper>
                 <br></br>
@@ -69,9 +83,7 @@ const TodoForm = () => {
                 </Button>
                 <Ul>
                   {tasks.length > 0 ? (
-                    tasks.map((task) => (
-                      <TaskList task={task} formik={formik} />
-                    ))
+                    tasks.map((task) => <TaskList task={task} />)
                   ) : (
                     <NoTaskText>No Tasks Added!</NoTaskText>
                   )}
