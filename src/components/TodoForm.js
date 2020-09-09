@@ -1,48 +1,50 @@
 import React from "react";
 import styled from "styled-components";
 import TaskList from "./TaskList";
+import { useSelector, useDispatch } from "react-redux";
+import { addTask, updateTask, clearAll } from "../features/todoSlice";
+
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import uuid from "react-uuid";
-import {addTask} from "../features/todoSlice";
-import {useSelector , useDispatch} from "react-redux";
 import ErrorMsg from "./ErrorMsg";
+import uuid from "react-uuid";
 
 const MyInput = ({ field, ...props }) => {
-  console.log(field);
   return <Input {...field} {...props} />;
 };
 
 const TodoForm = () => {
-  const tasks = useSelector(state=>state.tasks) ;
- const dispatch = useDispatch();
- const foundItem = useSelector(state=>state.foundItem);
+  const tasks = useSelector((state) => state.tasks);
+
+  const foundItem = useSelector((state) => state.foundItem);
+  const change = useSelector((state) => state.change);
+  const dispatch = useDispatch();
 
   const onSubmit = (values, onSubmitProps) => {
     if (values.inputList.length > 0) {
       if (foundItem === null) {
-        const {inputList} = values
-        dispatch(addTask({inputList,id:uuid()}));
+        const { inputList } = values;
+        dispatch(addTask({ inputList, id: uuid() }));
         onSubmitProps.resetForm();
       } else {
-        editTask(values.inputList, foundItem.id);
+        const { inputList } = values;
+        const { id } = foundItem;
+        dispatch(updateTask({ inputList, id }));
 
-        setChange(false);
-        setFoundItem(null);
         onSubmitProps.resetForm();
       }
     }
   };
   const handleClear = (e) => {
     e.preventDefault();
-    clearAll();
+    dispatch(clearAll());
   };
 
   return (
     <>
       <Container>
         <Formik
-          initialValues={{ inputList: foundItem ? foundItem.taskTitle : "" }}
+          initialValues={{ inputList: foundItem ? foundItem.inputList : "" }}
           validationSchema={Yup.object({
             inputList: Yup.string().required("Required"),
           })}
@@ -59,7 +61,15 @@ const TodoForm = () => {
                     type="text"
                     placeholder="ADD YOUR ITEMS"
                     name="inputList"
+                    // value={formik.values.inputList}
                   />
+                  {/* <Input
+                    name="inputList"
+                    value={formik.values.inputList}
+                    onChange={(e) =>
+                      formik.setFieldValue("inputlist", e.target.value)
+                    }
+                  /> */}
                   <ErrorMessage name="inputList" component={ErrorMsg} />
                 </InputWrapper>
                 <br></br>
