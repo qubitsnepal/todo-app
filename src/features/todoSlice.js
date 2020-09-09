@@ -5,11 +5,17 @@ const todoSlice = createSlice({
     name:"todo",
     initialState:{
       tasks:[],
+      foundItem: null
     },
 reducers:{
+  addTask:(state,action)=>{
+    const {payload} = action 
+    state.tasks=[...state.tasks,{payload}]
+  }
 }
 })
 
 
-const {reducer}=todoSlice
+const {actions,reducer}=todoSlice
+export const {addTask} = actions
 export default reducer;

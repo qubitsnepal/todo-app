@@ -9,7 +9,7 @@ const Task = ({ task }) => {
     <>
       <Table>
         <Trow>
-          <Column>{task.taskTitle}</Column>
+          <Column>{task.inputList}</Column>
           <Column>
             <Icon
               onClick={() => deleteItem(task.id)}
