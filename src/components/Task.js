@@ -1,9 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
-import GlobalContext from "../contexts/GlobalContext/GlobalContext";
+import { deleteTask, findItemById } from "../features/todoSlice";
+import { useDispatch } from "react-redux";
 
 const Task = ({ task }) => {
-  const { deleteItem, findItemById } = useContext(GlobalContext);
+  const dispatch = useDispatch();
 
   return (
     <>
@@ -12,11 +13,11 @@ const Task = ({ task }) => {
           <Column>{task.inputList}</Column>
           <Column>
             <Icon
-              onClick={() => deleteItem(task.id)}
+              onClick={() => dispatch(deleteTask(task.id))}
               className="fa fa-trash"
             ></Icon>
             <Icon
-              onClick={() => findItemById(task.id)}
+              onClick={() => dispatch(findItemById(task.id))}
               className="fa fa-edit"
             ></Icon>
           </Column>
