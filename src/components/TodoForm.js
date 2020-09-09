@@ -1,9 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
 import TaskList from "./TaskList";
-import GlobalContext from "../contexts/GlobalContext/GlobalContext";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import uuid from "react-uuid";
+import {addTask} from "../features/todoSlice";
+import {useSelector , useDispatch} from "react-redux";
 import ErrorMsg from "./ErrorMsg";
 
 const MyInput = ({ field, ...props }) => {
@@ -12,21 +14,15 @@ const MyInput = ({ field, ...props }) => {
 };
 
 const TodoForm = () => {
-  const {
-    tasks,
-    addTask,
-    clearAll,
-    foundItem,
-    editTask,
-    change,
-    setChange,
-    setFoundItem,
-  } = useContext(GlobalContext);
+  const tasks = useSelector(state=>state.tasks) ;
+ const dispatch = useDispatch();
+ const foundItem = useSelector(state=>state.foundItem);
 
   const onSubmit = (values, onSubmitProps) => {
     if (values.inputList.length > 0) {
       if (foundItem === null) {
-        addTask(values.inputList);
+        const {inputList} = values
+        dispatch(addTask({inputList,id:uuid()}));
         onSubmitProps.resetForm();
       } else {
         editTask(values.inputList, foundItem.id);
@@ -63,15 +59,7 @@ const TodoForm = () => {
                     type="text"
                     placeholder="ADD YOUR ITEMS"
                     name="inputList"
-                    // value={formik.values.inputList}
                   />
-                  {/* <Input
-                    name="inputList"
-                    value={formik.values.inputList}
-                    onChange={(e) =>
-                      formik.setFieldValue("inputlist", e.target.value)
-                    }
-                  /> */}
                   <ErrorMessage name="inputList" component={ErrorMsg} />
                 </InputWrapper>
                 <br></br>
