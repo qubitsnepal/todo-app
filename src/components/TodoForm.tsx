@@ -4,41 +4,68 @@ import TaskList from "./TaskList";
 import { useSelector, useDispatch } from "react-redux";
 import { addTask, updateTask, clearAll } from "../features/todoSlice";
 
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage,FormikHelpers,FieldConfig,FormikProps, } from "formik";
 import * as Yup from "yup";
+import { ReduxState } from "../store/store"
 import ErrorMsg from "./ErrorMsg";
 import uuid from "react-uuid";
+import { Task as TaskType } from "../types/Types";
 
-const MyInput = ({ field, ...props }) => {
-  return <Input {...field} {...props} />;
-};
 
-const TodoForm = () => {
-  const tasks = useSelector((state) => state.tasks);
+interface InputProps
+  extends Omit<
+    React.DetailedHTMLProps<
+      React.InputHTMLAttributes<HTMLInputElement>,
+      HTMLInputElement
+    >,
+    "form"
+  > {
+  field?: FieldConfig
+  form?: FormikProps<any>
+  foundItem:TaskType
+  inputList:TaskType
+  taskTitle:string
+}
 
-  const foundItem = useSelector((state) => state.foundItem);
-  const change = useSelector((state) => state.change);
+const MyInput = (props: InputProps) => {
+  const { field, ...restProps } = props
+
+  // @ts-ignore
+
+  return <Input {...field} {...restProps} />
+}
+
+const TodoForm:React.FC= () => {
+  const tasks = useSelector((state : ReduxState) => state.todo.tasks);
+
+  const foundItem = useSelector((state : ReduxState) => state.todo.foundItem);
+  const change = useSelector((state : ReduxState) => state.todo.change);
   const dispatch = useDispatch();
 
-  const onSubmit = (values, onSubmitProps) => {
+  const initialValues = { inputList: foundItem ? foundItem.inputList : "" }
+
+  const onSubmit = (
+    values: typeof initialValues,
+    onSubmitProps: FormikHelpers<typeof initialValues>,
+  )=> {
     if (values.inputList.length > 0) {
       if (foundItem === null) {
         const { inputList } = values;
         dispatch(addTask({ inputList, id: uuid() }));
         onSubmitProps.resetForm();
       } else {
-        const { inputList } = values;
-        const { id } = foundItem;
+        const { inputList } = values
+        const { id } = (foundItem as TaskType)   // foundItem
         dispatch(updateTask({ inputList, id }));
 
         onSubmitProps.resetForm();
       }
     }
   };
-  const handleClear = (e) => {
-    e.preventDefault();
-    dispatch(clearAll());
-  };
+  const handleClear = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault()
+    dispatch(clearAll())
+  }
 
   return (
     <>
@@ -49,7 +76,7 @@ const TodoForm = () => {
             inputList: Yup.string().required("Required"),
           })}
           onSubmit={onSubmit}
-          key={foundItem ? foundItem.taskTitle : ""}
+          key={foundItem ? foundItem.inputList : ""}
         >
           {(formik) => {
             return (
@@ -61,16 +88,15 @@ const TodoForm = () => {
                     type="text"
                     placeholder="ADD YOUR ITEMS"
                     name="inputList"
-                    // value={formik.values.inputList}
+                    autoComplete="off"
                   />
-                  {/* <Input
+  
+                  <ErrorMessage
                     name="inputList"
-                    value={formik.values.inputList}
-                    onChange={(e) =>
-                      formik.setFieldValue("inputlist", e.target.value)
-                    }
-                  /> */}
-                  <ErrorMessage name="inputList" component={ErrorMsg} />
+                    render={(errorMessage) => (
+                      <ErrorMsg>{errorMessage}</ErrorMsg>
+                    )}
+                  /> 
                 </InputWrapper>
                 <br></br>
 
@@ -94,7 +120,7 @@ const TodoForm = () => {
     </>
   );
 };
-export default TodoForm;
+
 
 const Container = styled.div`
   height: 850px;
@@ -150,3 +176,6 @@ const NoTaskText = styled.div`
 const InputWrapper = styled.div`
   text-align: center;
 `;
+
+
+export default TodoForm;

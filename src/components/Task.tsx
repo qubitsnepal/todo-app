@@ -2,8 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import { deleteTask, findItemById } from "../features/todoSlice";
 import { useDispatch } from "react-redux";
+import { Task as TaskType } from "../types/Types"
 
-const Task = ({ task }) => {
+
+interface Props{
+ task:TaskType
+}
+
+const Task:React.FC<Props>= ({ task }) => {
   const dispatch = useDispatch();
 
   return (
@@ -27,7 +33,7 @@ const Task = ({ task }) => {
   );
 };
 
-export default Task;
+
 
 const Icon = styled.i`
   color: white;
@@ -49,3 +55,6 @@ const Trow = styled.tr`
   display: flex;
   justify-content: space-between;
 `;
+
+
+export default Task;

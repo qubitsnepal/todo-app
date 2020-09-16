@@ -1,29 +1,41 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import Task from "../components/Task";
+import { Task as TaskType } from "../types/Types";
+
+interface InitialState{
+  tasks:TaskType[]
+  foundItem:TaskType | null | undefined
+  change:boolean
+
+}
+
+const initialState: InitialState ={
+  tasks: [],
+  foundItem:null,
+  change: false,
+}
+
 
 const todoSlice = createSlice({
   name: "todo",
-  initialState: {
-    tasks: [],
-    foundItem: null,
-    change: false,
-  },
+  initialState,
   reducers: {
-    addTask: (state, action) => {
-      const { payload } = action;
+    addTask: (state, action: PayloadAction<TaskType>) => {
+      const { payload } = action
       state.tasks = [...state.tasks, payload];
     },
 
     clearAll: (state) => {
       state.tasks = [];
     },
-    deleteTask: (state, action) => {
+    deleteTask: (state, action: PayloadAction<string>) => {
       state.tasks = state.tasks.filter((item) => item.id !== action.payload);
     },
-    findItemById: (state, action) => {
+    findItemById: (state, action: PayloadAction<string>) => {
       state.foundItem = state.tasks.find((item) => item.id === action.payload);
       state.change = true;
     },
-    updateTask: (state, action) => {
+    updateTask: (state, action: PayloadAction<TaskType>) => {
       const { inputList, id } = action.payload;
 
       const newTasks = state.tasks.map((item) => {
@@ -52,4 +64,6 @@ export const {
   findItemById,
   updateTask,
 } = actions;
+
+
 export default reducer;

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-function SignInForm() {
+const SignInForm = () => {
   const validationSchema = Yup.object({
     email: Yup.string().email("Invalid email format").required("Required"),
     password: Yup.string()
