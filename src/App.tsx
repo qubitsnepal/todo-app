@@ -4,11 +4,12 @@ import {Provider} from "react-redux";
 import TodoForm from "./components/TodoForm";
 import store from "./store/store";
 
-function App() {
+
+const App=()=> {
   return (
     <>
     <Provider store={store}>
-       <TodoForm/>
+      <TodoForm />
     </Provider>
      
     </>
